@@ -4,13 +4,18 @@ number ITERATIONS 3
 number CELL_SIZE 10
 number PROB 0.7
 
+expression WIDTH {WIDTH + 2}
+expression HEIGHT {HEIGHT + 2}
+
+number start 2
+
 procedure draw_rect {x y size}
 {
 	number X x
 	number Y y
 
-	expression X {X*size}
-	expression Y {Y*size}
+	expression X {(X - 1)*size}
+	expression Y {(Y - 1)*size}
 	point p1 X Y
 
 	expression X {X-size}
@@ -20,21 +25,22 @@ procedure draw_rect {x y size}
 	fillrectangle p1 p2
 }
 
-array game_of_life { WIDTH HEIGHT }
+
+array game_of_life { WIDTH HEIGHT ITERATIONS }
 
 %%%%%%%%%%%% MAIN %%%%%%%%%%%%%%%
 
 
-number w 1
-while {w <= WIDTH }
+number w start
+while {w < WIDTH }
 {
-	number h 1
-	while {h <= HEIGHT}
+	number h start
+	while {h < HEIGHT}
 	{
 		random r
 		if_then_else {r > PROB}
 		{
-			expression game_of_life[w][h] {1}
+			expression game_of_life[w][h][1] {1}
 
 		}
 		{
@@ -45,14 +51,40 @@ while {w <= WIDTH }
 	expression w {w + 1}
 }
 
-number w 1
-while {w <= WIDTH }
+
+
+number i 2
+while {i <= ITERATIONS}
 {
-	number h 1
-	while {h <= HEIGHT}
+	number w start
+	while {w < WIDTH }
+	{
+		number h start
+		while {h < HEIGHT}
+		{
+			
+
+			expression h {h + 1}
+		}
+		expression w {w + 1}
+	}
+	expression i {i + 1}
+}
+
+
+
+
+
+%%%%%%%%%%% DRAW %%%%%%%%%%%%%%%
+
+number w start
+while {w < WIDTH }
+{
+	number h start
+	while {h < HEIGHT}
 	{
 
-		if_then_else {0 < game_of_life[w][h]}
+		if_then_else {0 < game_of_life[w][h][1]}
 		{
 			call draw_rect {w h CELL_SIZE}
 		}
