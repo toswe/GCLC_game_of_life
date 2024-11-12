@@ -1,11 +1,14 @@
 number WIDTH 14
 number HEIGHT 10
-number ITERATIONS 3
+number ITERATIONS 20
 number CELL_SIZE 10
 number PROB 0.7
 
 expression WIDTH {WIDTH + 2}
 expression HEIGHT {HEIGHT + 2}
+
+point CC 1 -1 20 -1
+getx frame CC
 
 number start 2
 
@@ -30,6 +33,13 @@ array game_of_life { WIDTH HEIGHT ITERATIONS }
 
 %%%%%%%%%%%% MAIN %%%%%%%%%%%%%%%
 
+%%%%% GLIDER %%%%%%
+expression game_of_life[5][5][1] {1}
+expression game_of_life[6][5][1] {1}
+expression game_of_life[7][5][1] {1}
+expression game_of_life[7][4][1] {1}
+expression game_of_life[6][3][1] {1}
+%%% END OF GLIDER %%%
 
 number w start
 while {w < WIDTH }
@@ -40,7 +50,7 @@ while {w < WIDTH }
 		random r
 		if_then_else {r > PROB}
 		{
-			expression game_of_life[w][h][1] {1}
+			%expression game_of_life[w][h][1] {1}
 
 		}
 		{
@@ -51,10 +61,8 @@ while {w < WIDTH }
 	expression w {w + 1}
 }
 
-
-
 number i 2
-while {i <= ITERATIONS}
+while {i <= frame}
 {
 	number w start
 	while {w < WIDTH }
@@ -62,7 +70,26 @@ while {i <= ITERATIONS}
 		number h start
 		while {h < HEIGHT}
 		{
-			
+
+			expression surrounding {game_of_life[w-1][h-1][i-1]+game_of_life[w-1][h][i-1]+game_of_life[w-1][h+1][i-1]+game_of_life[w][h+1][i-1]+game_of_life[w+1][h+1][i-1]+game_of_life[w+1][h][i-1]+game_of_life[w+1][h-1][i-1]+game_of_life[w][h-1][i-1]}
+
+			if_then_else {game_of_life[w][h][i-1] > 0}
+			{
+				if_then_else {surrounding == 3 || surrounding == 2}
+				{
+					expression game_of_life[w][h][i] {1}
+				}
+				{
+				}
+			}
+			{
+				if_then_else {surrounding == 3}
+				{
+					expression game_of_life[w][h][i] {1}
+				}
+				{
+				}
+			}
 
 			expression h {h + 1}
 		}
@@ -70,9 +97,6 @@ while {i <= ITERATIONS}
 	}
 	expression i {i + 1}
 }
-
-
-
 
 
 %%%%%%%%%%% DRAW %%%%%%%%%%%%%%%
@@ -84,7 +108,7 @@ while {w < WIDTH }
 	while {h < HEIGHT}
 	{
 
-		if_then_else {0 < game_of_life[w][h][1]}
+		if_then_else {0 < game_of_life[w][h][frame]}
 		{
 			call draw_rect {w h CELL_SIZE}
 		}
@@ -97,5 +121,4 @@ while {w < WIDTH }
 	expression w {w + 1}
 }
 
-
-
+animation_frames ITERATIONS 5
