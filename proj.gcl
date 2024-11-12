@@ -1,0 +1,60 @@
+number WIDTH 5
+number HEIGHT 5
+number CELL_SIZE 5
+number PROB 0.7
+number HXW 0
+expression HXW {HEIGHT*WIDTH}
+
+
+procedure draw_rect {x y size}
+{
+	number X x
+	number Y y
+
+	expression X {X*size}
+	expression Y {Y*size}
+	point p1 X Y
+
+	expression X {X+size}
+	expression Y {Y+size}
+
+	point p2 X Y
+	fillrectangle p1 p2
+}
+
+array game_of_life { WIDTH HEIGHT }
+
+number one 1
+
+number i 0
+while {i < HXW}
+{
+	number h 0
+	expression h {floor(i/WIDTH)}
+
+	number w 0
+	expression w {floor(i-h*WIDTH)}
+
+	random r
+	if_then_else {r > PROB}
+	{
+		expression game_of_life[w][h] {1}
+		call draw_rect {w h CELL_SIZE}
+	}
+	{
+	}
+
+	number indicator 1
+	%expression indicator {game_of_life[w][h]}
+
+	if_then_else {0 < indicator}
+	{
+		% call draw_rect {w h CELL_SIZE}
+	}
+	{
+	}
+
+	expression i {i+1}
+}
+
+
