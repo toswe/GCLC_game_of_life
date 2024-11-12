@@ -1,15 +1,8 @@
 number WIDTH 14
 number HEIGHT 10
+number ITERATIONS 3
 number CELL_SIZE 10
 number PROB 0.7
-number HXW 0
-expression HXW {HEIGHT*WIDTH}
-
-procedure mod {x y result}
-{
-	expression result {x - floor(x / y) * y}
-}
-
 
 procedure draw_rect {x y size}
 {
@@ -31,40 +24,46 @@ array game_of_life { WIDTH HEIGHT }
 
 %%%%%%%%%%%% MAIN %%%%%%%%%%%%%%%
 
-number i 0
-while {i < HXW}
+
+number w 1
+while {w <= WIDTH }
 {
-	expression h {floor(i/WIDTH) + 1}
-
-	number i_mod_width 0
-	call mod {i WIDTH i_mod_width}
-
-	expression w {i_mod_width + 1}
-
-	random r
-	if_then_else {r > PROB}
+	number h 1
+	while {h <= HEIGHT}
 	{
-		expression game_of_life[w][h] {1}
-	}
-	{
-	}
+		random r
+		if_then_else {r > PROB}
+		{
+			expression game_of_life[w][h] {1}
 
-	expression i {i+1}
+		}
+		{
+		}
+
+		expression h {h + 1}
+	}
+	expression w {w + 1}
 }
 
-number i 0
-while {i < HXW}
+number w 1
+while {w <= WIDTH }
 {
-	expression h {floor(i/WIDTH) + 1}
-
-	expression w {floor(i-(h-1)*WIDTH) + 1}
-
-	if_then_else {0 < game_of_life[w][h]}
+	number h 1
+	while {h <= HEIGHT}
 	{
-		call draw_rect {w h CELL_SIZE}
-	}
-	{
-	}
 
-	expression i {i+1}
+		if_then_else {0 < game_of_life[w][h]}
+		{
+			call draw_rect {w h CELL_SIZE}
+		}
+		{
+		}
+		
+
+		expression h {h + 1}
+	}
+	expression w {w + 1}
 }
+
+
+
