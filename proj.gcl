@@ -1,5 +1,5 @@
-number WIDTH 5
-number HEIGHT 5
+number WIDTH 28
+number HEIGHT 20
 number CELL_SIZE 5
 number PROB 0.7
 number HXW 0
@@ -15,8 +15,8 @@ procedure draw_rect {x y size}
 	expression Y {Y*size}
 	point p1 X Y
 
-	expression X {X+size}
-	expression Y {Y+size}
+	expression X {X-size}
+	expression Y {Y-size}
 
 	point p2 X Y
 	fillrectangle p1 p2
@@ -24,32 +24,21 @@ procedure draw_rect {x y size}
 
 array game_of_life { WIDTH HEIGHT }
 
-number one 1
+%%%%%%%%%%%% MAIN %%%%%%%%%%%%%%%
 
 number i 0
 while {i < HXW}
 {
 	number h 0
-	expression h {floor(i/WIDTH)}
+	expression h {floor(i/WIDTH) + 1}
 
 	number w 0
-	expression w {floor(i-h*WIDTH)}
+	expression w {floor(i-(h-1)*WIDTH) + 1}
 
 	random r
 	if_then_else {r > PROB}
 	{
 		expression game_of_life[w][h] {1}
-		call draw_rect {w h CELL_SIZE}
-	}
-	{
-	}
-
-	number indicator 1
-	%expression indicator {game_of_life[w][h]}
-
-	if_then_else {0 < indicator}
-	{
-		% call draw_rect {w h CELL_SIZE}
 	}
 	{
 	}
@@ -57,4 +46,21 @@ while {i < HXW}
 	expression i {i+1}
 }
 
+number i 0
+while {i < HXW}
+{
+	number h 0
+	expression h {floor(i/WIDTH) + 1}
 
+	number w 0
+	expression w {floor(i-(h-1)*WIDTH) + 1}
+
+	if_then_else {0 < game_of_life[w][h]}
+	{
+		call draw_rect {w h CELL_SIZE}
+	}
+	{
+	}
+
+	expression i {i+1}
+}
