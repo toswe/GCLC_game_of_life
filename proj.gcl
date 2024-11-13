@@ -1,13 +1,13 @@
 number WIDTH 14
 number HEIGHT 10
-number ITERATIONS 20
+number ITERATIONS 30
 number CELL_SIZE 10
 number PROB 0.7
 
 expression WIDTH {WIDTH + 2}
 expression HEIGHT {HEIGHT + 2}
 
-point CC 1 -1 20 -1
+point CC 1 -1 30 -1
 getx frame CC
 
 number start 2
@@ -29,73 +29,77 @@ procedure draw_rect {x y size}
 }
 
 
-array game_of_life { WIDTH HEIGHT ITERATIONS }
+array game_of_life { WIDTH HEIGHT }
 
 %%%%%%%%%%%% MAIN %%%%%%%%%%%%%%%
 
 %%%%% GLIDER %%%%%%
-expression game_of_life[5][5][1] {1}
-expression game_of_life[6][5][1] {1}
-expression game_of_life[7][5][1] {1}
-expression game_of_life[7][4][1] {1}
-expression game_of_life[6][3][1] {1}
+expression game_of_life[5][5] {1}
+expression game_of_life[6][5] {1}
+expression game_of_life[7][5] {1}
+expression game_of_life[7][4] {1}
+expression game_of_life[6][3] {1}
 %%% END OF GLIDER %%%
 
 
 %%%%%% TOAD %%%%%
-expression game_of_life[10][10][1] {1}
-expression game_of_life[11][9][1] {1}
-expression game_of_life[11][8][1] {1}
-expression game_of_life[8][9][1] {1}
-expression game_of_life[8][8][1] {1}
-expression game_of_life[9][7][1] {1}
+expression game_of_life[10][10] {1}
+expression game_of_life[11][9] {1}
+expression game_of_life[11][8] {1}
+expression game_of_life[8][9] {1}
+expression game_of_life[8][8] {1}
+expression game_of_life[9][7] {1}
 %%% END OF TOAD %%%
 
 
 %%%%%% BEACON %%%%%
-expression game_of_life[14][3][1] {1}
-expression game_of_life[14][4][1] {1}
-expression game_of_life[13][3][1] {1}
-expression game_of_life[13][4][1] {1}
-expression game_of_life[12][5][1] {1}
-expression game_of_life[12][6][1] {1}
-expression game_of_life[11][5][1] {1}
-expression game_of_life[11][6][1] {1}
+expression game_of_life[14][3] {1}
+expression game_of_life[14][4] {1}
+expression game_of_life[13][3] {1}
+expression game_of_life[13][4] {1}
+expression game_of_life[12][5] {1}
+expression game_of_life[12][6] {1}
+expression game_of_life[11][5] {1}
+expression game_of_life[11][6] {1}
 %%% END OF BEACON %%%
 
 
+
 %%%%%% BLINKER %%%%%
-expression game_of_life[4][10][1] {1}
-expression game_of_life[4][9][1] {1}
-expression game_of_life[4][8][1] {1}
+expression game_of_life[4][10] {1}
+expression game_of_life[4][9] {1}
+expression game_of_life[4][8] {1}
 %%% END OF BLINKER %%%
 
 
 number i 2
 while {i <= frame}
 {
+	array gol_tmp { WIDTH HEIGHT }
 	number h start
 	while {h < HEIGHT }
 	{
 		number w start
 		while {w < WIDTH}
 		{
+			expression gol_tmp[w][h] {game_of_life[w][h]}
+			expression game_of_life[w][h] {0}
 
 			expression surrounding {0}
-			expression surrounding {surrounding + game_of_life[w-1][h-1][i-1]}
-			expression surrounding {surrounding + game_of_life[w-1][h][i-1]}
-			expression surrounding {surrounding + game_of_life[w-1][h+1][i-1]}
-			expression surrounding {surrounding + game_of_life[w][h-1][i-1]}
-			expression surrounding {surrounding + game_of_life[w][h+1][i-1]}
-			expression surrounding {surrounding + game_of_life[w+1][h+1][i-1]}
-			expression surrounding {surrounding + game_of_life[w+1][h][i-1]}
-			expression surrounding {surrounding + game_of_life[w+1][h-1][i-1]}
+			expression surrounding {surrounding + gol_tmp[w-1][h]}
+			expression surrounding {surrounding + gol_tmp[w-1][h-1]}
+			expression surrounding {surrounding + gol_tmp[w][h-1]}
+			expression surrounding {surrounding + gol_tmp[w+1][h-1]}
+			expression surrounding {surrounding + game_of_life[w-1][h+1]}
+			expression surrounding {surrounding + game_of_life[w][h+1]}
+			expression surrounding {surrounding + game_of_life[w+1][h+1]}
+			expression surrounding {surrounding + game_of_life[w+1][h]}
 
-			if_then_else {game_of_life[w][h][i-1] > 0}
+			if_then_else {gol_tmp[w][h] > 0}
 			{
 				if_then_else {surrounding == 3 || surrounding == 2}
 				{
-					expression game_of_life[w][h][i] {1}
+					expression game_of_life[w][h] {1}
 				}
 				{
 				}
@@ -103,7 +107,7 @@ while {i <= frame}
 			{
 				if_then_else {surrounding == 3}
 				{
-					expression game_of_life[w][h][i] {1}
+					expression game_of_life[w][h] {1}
 				}
 				{
 				}
@@ -126,7 +130,7 @@ while {w < WIDTH }
 	while {h < HEIGHT}
 	{
 
-		if_then_else {0 < game_of_life[w][h][frame]}
+		if_then_else {0 < game_of_life[w][h]}
 		{
 			call draw_rect {w h CELL_SIZE}
 		}
