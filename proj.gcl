@@ -74,11 +74,11 @@ expression game_of_life[4][8][1] {1}
 number i 2
 while {i <= frame}
 {
-	number w start
-	while {w < WIDTH }
+	number h start
+	while {h < HEIGHT }
 	{
-		number h start
-		while {h < HEIGHT}
+		number w start
+		while {w < WIDTH}
 		{
 
 			expression surrounding {0}
@@ -109,9 +109,9 @@ while {i <= frame}
 				}
 			}
 
-			expression h {h + 1}
+			expression w {w + 1}
 		}
-		expression w {w + 1}
+		expression h {h + 1}
 	}
 	expression i {i + 1}
 }
