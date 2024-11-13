@@ -41,25 +41,35 @@ expression game_of_life[7][4][1] {1}
 expression game_of_life[6][3][1] {1}
 %%% END OF GLIDER %%%
 
-number w start
-while {w < WIDTH }
-{
-	number h start
-	while {h < HEIGHT}
-	{
-		random r
-		if_then_else {r > PROB}
-		{
-			%expression game_of_life[w][h][1] {1}
 
-		}
-		{
-		}
+%%%%%% TOAD %%%%%
+expression game_of_life[10][10][1] {1}
+expression game_of_life[11][9][1] {1}
+expression game_of_life[11][8][1] {1}
+expression game_of_life[8][9][1] {1}
+expression game_of_life[8][8][1] {1}
+expression game_of_life[9][7][1] {1}
+%%% END OF TOAD %%%
 
-		expression h {h + 1}
-	}
-	expression w {w + 1}
-}
+
+%%%%%% BEACON %%%%%
+expression game_of_life[14][3][1] {1}
+expression game_of_life[14][4][1] {1}
+expression game_of_life[13][3][1] {1}
+expression game_of_life[13][4][1] {1}
+expression game_of_life[12][5][1] {1}
+expression game_of_life[12][6][1] {1}
+expression game_of_life[11][5][1] {1}
+expression game_of_life[11][6][1] {1}
+%%% END OF BEACON %%%
+
+
+%%%%%% BLINKER %%%%%
+expression game_of_life[4][10][1] {1}
+expression game_of_life[4][9][1] {1}
+expression game_of_life[4][8][1] {1}
+%%% END OF BLINKER %%%
+
 
 number i 2
 while {i <= frame}
