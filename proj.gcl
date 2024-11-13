@@ -81,7 +81,15 @@ while {i <= frame}
 		while {h < HEIGHT}
 		{
 
-			expression surrounding {game_of_life[w-1][h-1][i-1]+game_of_life[w-1][h][i-1]+game_of_life[w-1][h+1][i-1]+game_of_life[w][h+1][i-1]+game_of_life[w+1][h+1][i-1]+game_of_life[w+1][h][i-1]+game_of_life[w+1][h-1][i-1]+game_of_life[w][h-1][i-1]}
+			expression surrounding {0}
+			expression surrounding {surrounding + game_of_life[w-1][h-1][i-1]}
+			expression surrounding {surrounding + game_of_life[w-1][h][i-1]}
+			expression surrounding {surrounding + game_of_life[w-1][h+1][i-1]}
+			expression surrounding {surrounding + game_of_life[w][h-1][i-1]}
+			expression surrounding {surrounding + game_of_life[w][h+1][i-1]}
+			expression surrounding {surrounding + game_of_life[w+1][h+1][i-1]}
+			expression surrounding {surrounding + game_of_life[w+1][h][i-1]}
+			expression surrounding {surrounding + game_of_life[w+1][h-1][i-1]}
 
 			if_then_else {game_of_life[w][h][i-1] > 0}
 			{
